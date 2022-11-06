@@ -130,7 +130,13 @@ function myFunction(e) {
 
 function displayconsole(e){
     document.getElementById("overlay").hidden=true;
-    document.getElementById("display").innerHTML = 'You Just Clicked "'+e.target.innerHTML+'"';
+    reusablefunction(e.target);
+}
+
+
+function reusablefunction(variable){
+    //do something
+    document.getElementById("display").innerHTML = 'You Just Clicked "'+variable.value+'"';
 }
 
 </script>
