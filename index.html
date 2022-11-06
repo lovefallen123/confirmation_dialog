@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+<style>
+    .overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 2;
+      }
+    
+      .confirm-box {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 25%;
+        left: 25%;
+        text-align: center;
+        background: white;
+      }
+    
+      .close {
+        cursor: pointer;
+      }
+    </style>
+<title>Page Title</title>
+</head>
+<body>
+
+</body>
+</html>
+
+<script>
+
+document.body.onload = createPage;
+
+const buttonlist=[
+    {   
+        "quotes":"Are you sure you want to continue",
+        "options":["Yes","Cancel"],
+        "displaytext":"Click Me"
+    },
+    {   
+        "quotes":"Are you sure you not want to continue",
+        "options":["How about no","How about Yes"],
+        "displaytext":"Don't Click Me"
+    }
+];
+
+function createPage() {
+
+    // create a new div element
+    const newDiv = document.createElement("div");
+
+    for (let i = 0; i < buttonlist.length; i++) {
+        // create a new button element
+        const newButton = createButton(document,i,buttonlist[i]["quotes"],buttonlist[i]["options"],buttonlist[i]["displaytext"]);
+        newDiv.appendChild(newButton);
+    }
+    
+    //create span element
+    const newSpan = document.createElement("span");
+    newSpan.setAttribute("id", "display");
+    const newContent = document.createTextNode("");
+    newSpan.appendChild(newContent);
+
+    //create confirmationdialog element
+    const overlay = document.createElement("div");
+    overlay.setAttribute("id", "overlay");
+    overlay.setAttribute("class", "overlay");
+    overlay.hidden=true;
+    const cbox = document.createElement("div");
+    cbox.setAttribute("id", "confirm-box");
+    cbox.setAttribute("class", "confirm-box");
+    const overlaySpan = document.createElement("span");
+    overlaySpan.setAttribute("id", "overlaySpan");
+    const overlayContent = document.createTextNode("");
+    overlaySpan.appendChild(overlayContent);
+    cbox.appendChild(overlaySpan);
+    const bbox = document.createElement("div");
+    bbox.setAttribute("id", "bbox");
+    cbox.appendChild(bbox);
+    overlay.appendChild(cbox);
+    newDiv.appendChild(newSpan);
+    newDiv.appendChild(overlay);
+    document.body.appendChild(newDiv);
+}
+
+function createButton(document,id,quote,options,displaytext) {
+    // create a new button element
+    const newButton = document.createElement("button");
+    newButton.setAttribute("id", id);
+    newButton.addEventListener("click", myFunction);
+    newButton.setAttribute("key", quote);
+    newButton.setAttribute("value", options);
+
+    // button text
+    const newButtonContent = document.createTextNode(displaytext);
+
+    newButton.appendChild(newButtonContent);
+    return newButton
+}
+
+
+function myFunction(e) {
+    const quotes = buttonlist[e.target.id]["quotes"];
+    const options = buttonlist[e.target.id]["options"];
+    document.getElementById("overlay").hidden=false;
+    document.getElementById("overlaySpan").innerHTML=buttonlist[e.target.id]["quotes"];
+    const newbbox = document.createElement("div");
+    newbbox.setAttribute("id", "bbox");
+    
+    for (let i = 0; i < options.length; i++) {
+        // create a new button element
+        const newButton = document.createElement("button");
+        newButton.addEventListener("click", displayconsole);
+        const newButtonContent = document.createTextNode(options[i]);
+        newButton.appendChild(newButtonContent);
+        newbbox.appendChild(newButton);
+    }
+    document.getElementById("confirm-box").replaceChild(newbbox,document.getElementById("bbox"));
+    document.getElementById("display").innerHTML = '';
+
+}
+
+
+function displayconsole(e){
+    document.getElementById("overlay").hidden=true;
+    document.getElementById("display").innerHTML = 'You Just Clicked "'+e.target.innerHTML+'"';
+}
+
+</script>
